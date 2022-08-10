@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Library</title>
+	<link rel="stylesheet" type="text/css" href="library.css">
+</head>
+<body>
+	<div class="body"></div>
+	<center><p class="lib"><marquee>A BOOK LIST</p></marquee></center><br>
+	
+<input id="tit" type="" placeholder="Title" name="" style="max-width: 200px;">
+	<input id="auth" type="" placeholder="Author" name="" style="max-width: 200px;">
+	<input id="num" type="number" placeholder="Number of pages" name="" style="max-width: 200px;"><br><br>
+	<button id="sub" onclick="submitMe()">ADD A BOOK</button>&nbsp;&nbsp;&nbsp;
+	<button id="dis" onclick="seeBooks()">DISPLAY BOOKS</button>&nbsp;&nbsp;
+	<button id="del" onclick="removeBooks()">DELETE ALL</button>&nbsp;&nbsp;
+	<button id="sea" onclick="searchBooks()">SEARCH</button>
+	<br><br>
+	<center><input type="text" placeholder="Search for a Book" id="searchme"></center><br>
+	<center><div id="result"></div></center>
+
+	<script type="text/javascript">
+		let output;
+		var b;
+		var arr;
+		
+		function submitMe() {
+			arr = {title: tit.value, author: auth.value, number: num.value};
+			if (!localStorage.hasOwnProperty('myLibrary')) {
+				localStorage.myLibrary = JSON.stringify([])
+			}
+	    output = JSON.parse(localStorage.myLibrary)
+		output.push(arr)
+			 localStorage.myLibrary= JSON.stringify(output)
+			 alert("Your book has been added successfully");
+            }
+
+		
+		function seeBooks() {
+			var totalLibrary = "";
+		 b = JSON.parse(localStorage.getItem('myLibrary'));
+			totalLibrary += "<table border='2px' solid black><tr><th>S/N</th><th>Title</th><th>Author</th><th>Number of Pages</th><th>Opt</th></tr>";
+			for (var i = 0; i < b.length; i++) {
+            var lib = "<td>" + [i + 1] + "</td>" + "<td>" + b[i].title + "</td>" + "<td>" + b[i].author + "</td>" + "<td>" + b[i].number + "</td>" + "<td>" + "<button onclick='removeMe("+i+")'>REMOVE</button>" + "</td>";
+            
+				var library = "<tr>" + lib + "</tr>";
+				 totalLibrary += library;
+			}		
+			result.innerHTML = totalLibrary + "</table>";
+		
+			}
+
+		function removeBooks() {
+			localStorage.removeItem("myLibrary");
+			result.innerHTML = " ";
+		}
+		function removeMe(m) {
+			for (var i = 0; i < b.length; i++) {
+				if (m==i) {
+					b.splice(m, 1);
+				}
+			}
+		localStorage.myLibrary = JSON.stringify(b);
+		seeBooks();
+
+			}
+			function searchBooks() {
+				var c = JSON.parse(localStorage.getItem("myLibrary"))
+	 c.filter((a,b)=>b.title==searchme.value?result.innerHTML="<table border='2px' solid black><tr><th>S/N</th><th>Title</th><th>Author</th><th>Number of Pages</th></tr>" + "<td>" + [ind +1] + "</td>" + "<td>" + c[ind].title + "</td>" + "<td>" + c[ind].author + "</td>" + "<td>" + c[ind].number + "</td>" + "</table>" :null)
+					
+				} 
+	</script>
+</body>
+</html>
